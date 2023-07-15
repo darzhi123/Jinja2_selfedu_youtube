@@ -1,10 +1,9 @@
-import jinja2
+from jinja2 import Template
 
-data = """{%raw%}Модуль Jinja2 вместо
-определения {{ name }}
-подставляет соответствующее значение{%endraw%}"""
+link = """В HTML-документе ссылки определяются так:
+<a href='#'>Ссылка</a>"""
 
-tm = jinja2.Template(data)
-msg = tm.render(name='Илья')
+tm = Template("{{ link | e }}")
+msg = tm.render(link=link)
 
 print(msg)
