@@ -1,0 +1,70 @@
+Модуль Jinja2 -> используется для обработки шаблонов.
+
+Команда для установки Jinja2: pip install Jinja2
+
+Lesson N1.1:
+from jinja2 import Template
+
+name = 'Федор'
+
+tm = Template('Привет {{ name }}') # создаем экземпляр класса Template модуля jinja2 на основе шаблона Привет {{ name }}
+msg = tm.render(name=name)  # в шаблоне заменяем именованный параметр на представленный аргумент
+
+print(msg) -> Привет Федор
+
+
+Внутри шаблона можно писать:
+1) {%%} => cпецификатор шаблона;
+2) {{}} => выражение для вставки конструкций Python в шаблон;
+3) {# #} => блок комментариев;
+4) # ## => строковый комментарий.
+
+
+Lesson N1.2:
+from jinja2 import Template
+
+name = 'Федор'
+age = 28
+
+tm = Template('Мне {{a}} лет и зовут {{n}}')
+msg = tm.render(n=name, a=age) # аргументы передаются в виде словаря и из него выдаются и подставляются
+
+print(msg) -> Мне 28 лет и зовут Федор
+
+Проверка на конструкции Python: (Lesson N1.3)
+from jinja2 import Template
+
+name = 'Федор'
+age = 28
+
+tm = Template('Мне {{a*2}} лет и зовут {{n.upper()}}')
+msg = tm.render(n=name, a=age) # аргументы передаются в виде словаря и из него выдаются и подставляются
+
+print(msg) -> Мне 56 лет и зовут ФЕДОР
+
+Для работы с классом: Lesson N1.4
+from jinja2 import Template
+
+class Person:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+
+n = 'Федор'
+a = 28
+
+per = Person(n, a)
+
+tm = Template('Мне {{ age * 2 }} лет и зовут {{ name }}')
+msg = tm.render(age=per.age, name = per.name)
+
+print(msg) -> Мне 56 лет и зовут Федор
+
+или же:
+
+tm = Template('Мне {{ p.age * 2 }} лет и зовут {{ p.name }}')
+msg = tm.render(p = per)
+
+print(msg) -> Мне 56 лет и зовут Федор
+
+
