@@ -1,3 +1,5 @@
+Lesson N1.
+
 Модуль Jinja2 -> используется для обработки шаблонов.
 
 Команда для установки Jinja2: pip install Jinja2
@@ -91,3 +93,31 @@ tm = Template('Мне {{ p.getAge() }} лет и зовут {{ p.getName() }}')
 msg = tm.render(p=per)
 
 print(msg) -> Мне 28 лет и зовут Федор
+
+
+Lesson N2.
+Start_code:
+import jinja2
+
+data = """Модуль Jinja2 вместо
+определения {{ name }}
+подставляет соответствующее значение"""
+
+tm = jinja2.Template(data)
+msg = tm.render(name='Илья')
+
+print(msg) => Модуль Jinja2 вместо \n определения Илья \n подставляет соответствующее значение
+
+Способы экранирования данных в строках:
+Если нужно экранирование: создайте блок {%raw%} ... {%endraw%}
+Пример:
+import jinja2
+
+data = """{%raw%}Модуль Jinja2 вместо
+определения {{ name }}
+подставляет соответствующее значение{%endraw%}"""
+
+tm = jinja2.Template(data)
+msg = tm.render(name='Илья')
+
+print(msg) -> Модуль Jinja2 вместо \n определения {{ name }} \nподставляет соответствующее значение

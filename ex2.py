@@ -1,8 +1,8 @@
 import jinja2
 
-data = """Модуль Jinja2 вместо
+data = """{%raw%}Модуль Jinja2 вместо
 определения {{ name }}
-подставляет соответствующее значение"""
+подставляет соответствующее значение{%endraw%}"""
 
 tm = jinja2.Template(data)
 msg = tm.render(name='Илья')
