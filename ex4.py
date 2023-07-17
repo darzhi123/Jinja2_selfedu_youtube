@@ -1,10 +1,15 @@
 from jinja2 import Environment, FileSystemLoader
 
-link = """<select name="cities">
-{% for city in cities %}
-    <option value="{{c.id}}">{{c.id}}</option>
-{% endfor %}
-</select>
-"""
+persons = [
+    {'name': 'Алексей', 'old': 18, 'weight': 78.5},
+    {'name': 'Николай', 'old': 28, 'weight': 82.3},
+    {'name': 'Иван', 'old': 33, 'weight': 94.0}
+]
 
-tm =
+file_loader = FileSystemLoader('traindir')
+env = Environment(loader=file_loader)
+
+tm = env.get_template('main.htm')
+msg = tm.render(users=persons)
+
+print(msg)

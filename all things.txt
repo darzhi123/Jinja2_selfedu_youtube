@@ -360,3 +360,6 @@ print(msg)
     <li>weight: 94.0
     </ul>
 </ul>
+
+Lesson N4. FileSystemLoader, PackageLoader, DictLoader, FunctionLoader
+
