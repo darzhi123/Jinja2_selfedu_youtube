@@ -452,3 +452,6 @@ msg = tm.render(u=persons[0])
 
 print(msg)
 
+Если нужно добавить код из других htm, то: {% include 'filename.htm' %}
+А если такого htm нет? Можно проигнорировать данный кусок кода:
+{% include 'filename.htm' ignore missing %}
