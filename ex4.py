@@ -1,4 +1,4 @@
-from jinja2 import Environment, FileSystemLoader
+from jinja2 import Environment, FileSystemLoader, FunctionLoader
 
 persons = [
     {'name': 'Алексей', 'old': 18, 'weight': 78.5},
@@ -6,10 +6,17 @@ persons = [
     {'name': 'Иван', 'old': 33, 'weight': 94.0}
 ]
 
-file_loader = FileSystemLoader('traindir')
+def loadTpl(path):
+    if path == 'index':
+        return '''Имя {{u.name}}, возраст {{u.old}}'''
+    else:
+        return '''Данные: {{u}}'''
+
+# file_loader = FileSystemLoader('traindir')
+file_loader = FunctionLoader(loadTpl)
 env = Environment(loader=file_loader)
 
-tm = env.get_template('main.htm')
-msg = tm.render(users=persons)
+tm = env.get_template('index')  # Template
+msg = tm.render(u=persons[0])
 
 print(msg)
