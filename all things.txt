@@ -263,3 +263,100 @@ print(msg) => АЛЕКСЕЙ\nНИКОЛАЙ\nИВАН\n
 
 Макроопределение для шаблонов:
 DRY - Don't repeat yourself (не повторяйся
+
+Макрос в Jinja2 примерно как функция.
+В шаблонах Jinja2 макросы определяются тегами {% macro ... %}{% endmacro %}.
+Они полезны для того, чтобы поместить часто используемые идиомы в многоразовые функции, чтобы не повторяться.
+
+Пример:
+from jinja2 import Template
+
+html = '''
+{%- macro input(name, value='', type='text', size=20) -%}
+    <input type = "{{ type }}" name = "{{ name }}" value = "{{ value | e }}" size = "{{ size }}">
+{%- endmacro -%}
+<p>{{ input('username') }}</p>
+<p>{{ input('email') }}</p>
+<p>{{ input('password') }}</p>
+'''
+
+tm = Template(html)
+msg = tm.render()
+
+print(msg)
+то есть в мсг будет msg => <p><input type = "text" name = "username" value = "" size = "20"></p>  \n
+<p><input type = "text" name = "email" value = "" size = "20"></p>  \n
+<p><input type = "text" name = "password" value = "" size = "20"></p>  \n
+
+Вложенные макросы (call):
+call - специальное определение, которое позволяет создавать вложенные макросы.
+Архитектура call:
+{% call[(параметры)] <вызов макроса> %}
+<вложенный шаблон>
+{% endcall %}
+
+Архитектура в примере ниже следующая:
+{% macro list_users(list_of_user) -%}
+<ul>
+{% for u in users -%}
+    <li>{{u.name}} {{caller(u)}}
+{%- endfor %}}
+</ul>
+{% endmacro %}
+
+и после этого прописываем caller:
+{% call(user) list_users(users) %}
+    <ul>
+    <li>age: {{user.age}}
+    <li>weight: {{user.weight}}
+    <\ul>
+{% endcall -%}
+
+Пример:
+from jinja2 import Template
+
+persons = [
+    {'name': 'Алексей', 'old': 18, 'weight': 78.5},
+    {'name': 'Николай', 'old': 28, 'weight': 82.3},
+    {'name': 'Иван', 'old': 33, 'weight': 94.0}
+]
+
+html = '''
+{% macro list_users(list_of_user) -%}
+<ul>
+{% for u in list_of_user -%}
+    <li>{{u.name}} {{caller(u)}}
+{%- endfor %}
+</ul>
+{%- endmacro %}
+
+{% call(user) list_users(users) %}
+    <ul>
+    <li>age: {{user.old}}
+    <li>weight: {{user.weight}}
+    </ul>
+{% endcall -%}
+'''
+
+tm = Template(html)
+msg = tm.render(users=persons)
+
+print(msg)
+то msg:
+<ul>
+<li>Алексей
+    <ul>
+    <li>age: 18
+    <li>weight: 78.5
+    </ul>
+<li>Николай
+    <ul>
+    <li>age: 28
+    <li>weight: 82.3
+    </ul>
+<li>Иван
+    <ul>
+    <li>age: 33
+    <li>weight: 94.0
+    </ul>
+</ul>

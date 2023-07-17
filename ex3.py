@@ -1,5 +1,4 @@
 from jinja2 import Template
-from pprint import pprint
 
 persons = [
     {'name': 'Алексей', 'old': 18, 'weight': 78.5},
@@ -7,13 +6,24 @@ persons = [
     {'name': 'Иван', 'old': 33, 'weight': 94.0}
 ]
 
-tpl = '''
-{%- for user in users -%}
-{%- filter upper() %}{{user.name}}{% endfilter %}
-{% endfor -%}
+html = '''
+{% macro list_users(list_of_user) -%}
+<ul>
+{% for u in list_of_user -%}
+    <li>{{u.name}} {{caller(u)}}
+{%- endfor %}
+</ul>
+{%- endmacro %}
+
+{% call(user) list_users(users) %}
+    <ul>
+    <li>age: {{user.old}}
+    <li>weight: {{user.weight}}
+    </ul>
+{% endcall -%}
 '''
 
-tm = Template(tpl)
+tm = Template(html)
 msg = tm.render(users=persons)
 
 print(msg)
