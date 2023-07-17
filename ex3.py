@@ -1,16 +1,19 @@
 from jinja2 import Template
+from pprint import pprint
 
-cars = [
-    {'model': 'Ауди', 'price': 23_000},
-    {'model': 'Шкода', 'price': 17_300},
-    {'model': 'Вольво', 'price': 44_300},
-    {'model': 'Фольксваген', 'price': 21_300}
+persons = [
+    {'name': 'Алексей', 'old': 18, 'weight': 78.5},
+    {'name': 'Николай', 'old': 28, 'weight': 82.3},
+    {'name': 'Иван', 'old': 33, 'weight': 94.0}
 ]
 
-digs = [1, 2, 3, 4, 5]
+tpl = '''
+{%- for user in users -%}
+{%- filter upper() %}{{user.name}}{% endfilter %}
+{% endfor -%}
+'''
 
-tpl = "Суммарная цена автомобилей {{ cs | sum }}"
 tm = Template(tpl)
-msg = tm.render(cs = digs)
+msg = tm.render(users=persons)
 
 print(msg)
