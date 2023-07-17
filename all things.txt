@@ -362,4 +362,66 @@ print(msg)
 </ul>
 
 Lesson N4. FileSystemLoader, PackageLoader, DictLoader, FunctionLoader
+Что работать с html-ками из других мест и папок, пользуемся FileSystemLoader и Enviromment.
+Допустим, в одной директории с вашим .py находится папка с html-кодом, к примеру - папка traindir и файл main.htm
 
+main.htm:
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <base href="https://proproprogs.ru/">
+    <title>Про программирование</title>
+</head>
+<body>
+
+<ul>
+{% for u in users -%}
+    <li>{{u.name}}
+{% endfor -%}
+</ul>
+
+</body>
+</html>
+
+То:
+from jinja2 import Environment, FileSystemLoader # берем
+
+persons = [
+    {'name': 'Алексей', 'old': 18, 'weight': 78.5},
+    {'name': 'Николай', 'old': 28, 'weight': 82.3},
+    {'name': 'Иван', 'old': 33, 'weight': 94.0}
+]
+
+file_loader = FileSystemLoader('traindir')   #Открывает папку traindir
+env = Environment(loader=file_loader)    #Как-бы переходит в эту папку, указанную выше
+
+tm = env.get_template('main.htm')  #В этой папке открывает файл с заданным названием и делает ее классом Template
+msg = tm.render(users=persons)  # Выдает str-type HTML-code с исполненным кодом
+
+print(msg)::::::
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <base href="https://proproprogs.ru/">
+    <title>Про программирование</title>
+</head>
+<body>
+
+<ul>
+<li>Алексей
+<li>Николай
+<li>Иван
+</ul>
+
+</body>
+</html>
+
+Вместо FileSystemLoader можно использовать:
+PackageLoader => для загрузки шаблонов из пакета;
+DictLoader => для загрузки шаблонов из словаря;
+FunctionLoader => для загрузки на основе функции;
+PrefixLoader => загрузчик, использующий словарь для построения подкаталогов;
+ChoiceLoader => загрузчик, содержащий список других загрузчиков (если один не сработает, выбирается другой);
+ModuleLoader => загрузчик для скомпилированных шаблонов.
