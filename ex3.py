@@ -7,7 +7,7 @@ cars = [
     {'model': 'Фольксваген', 'price': 21_300}
 ]
 
-tpl = "Суммарная цена автомобилей {{ cs | sum(attribute='price') }}"
+tpl = "Суммарная цена автомобилей {{ cs }}"
 tm = Template(tpl)
 msg = tm.render(cs = cars)
 
