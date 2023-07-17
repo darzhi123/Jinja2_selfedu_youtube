@@ -10,6 +10,6 @@ file_loader = FileSystemLoader('traindir')
 env = Environment(loader=file_loader)
 
 tm = env.get_template("page.htm")
-msg = tm.render()
+msg = tm.render(title = "Любитель пива", domain = 'Civilization5.org/about_me')
 
 print(msg)
