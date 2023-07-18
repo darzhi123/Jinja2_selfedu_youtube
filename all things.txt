@@ -495,3 +495,45 @@ print(msg)
 <p>Содержимое страницы
 {{dialogue.dialog_1('Внимание', "Это тестовый диалог") }}
 {% include 'footer.htm' ignore missing %}
+
+Lesson N6. Наследование (расширение) шаблонов
+
+Новый тип блоков - именнованные.
+Архитектура именнованного типа блоков:
+{% block <blockname> %}
+{% endblock %}
+Такие блоки используются для расширения базового шаблона страницы.
+Как делается расширение (на примере):
+Пусть есть файл about.htm с следующим кодом:
+{% extends 'exmain.htm' %}
+
+{% block title %}О сайте{% endblock %}
+
+{% block content %}
+<h1>О сайте</h1>
+<p>Классный сайт, если его доделатью</p>
+{% endblock %}
+
+где 'exmain.htm' - имя шаблона, которое мы будем расширять. (имя шаблона, на котором строится about.htm),
+Где {% block title %} - в именнованном блоке title будет следующая информация: О сайте
+а в блоке content - <h1>О сайте</h1> <p>Классный сайт, если его доделать.</p>
+
+Тогда в следующем коде:
+from jinja2 import Environment, FileSystemLoader
+
+file_loader = FileSystemLoader('traindir')
+env = Environment(loader = file_loader)
+
+template = env.get_template('about.htm')
+
+output = template.render()
+
+print(output)
+
+Сначала импортируем нужное из модуля jinja2, затем
+задаем папку, где находятся шаблоны HTML-страниц, затем
+заходим в эту папку, указывая загрузчик, затем
+вытаскиваем шаблон about.htm, затем
+у этого шаблона вызываем метод render для непосредственной обработки.
+То есть в about.htm строчка {% extends 'exmain.htm' %} загружает exmain.htm, затем
+оба блока в about.htm встраиваются в заранее отведенные места в exmain.py
