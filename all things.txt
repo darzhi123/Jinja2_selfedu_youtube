@@ -471,3 +471,27 @@ print(msg)
 Модуль jinja2 позволяет не только включать отдельные файлы, но и импортировать их. В отличие от include, тут можно
 использовать не весь файл, а часть его функционала. (например, один нужный макрос в целом файле).
 
+пусть в файле dialogs.htm будет следующий код:
+{% macro dialog_1(title, msg = '') -%}
+<div class="dialog">
+    <p class="title">{{title}}</p>
+    <p class="message">{{msg}}</p>
+    <p><input type="button" value="Закрыть"></p>
+</div>
+{% endmacro %}
+
+То можно его использовать в другом файле, в нашем примере - page.htm, и даже присвоим ему свое название - dialogue.
+Импортируем в шаблон готовой странички page.htm все из page.htm:
+
+Было (т.е. без импорта):
+{% include 'header.htm' ignore missing %}
+<p>Содержимое страницы
+{% include 'footer.htm' ignore missing %}
+# тут просто добавляется шапка, <p> и подвал
+
+Стало(импортировали все из файла, сменили на удобное название и вставили):
+{% import 'dialogs.htm' as dialogue %}
+{% include 'header.htm' ignore missing %}
+<p>Содержимое страницы
+{{dialogue.dialog_1('Внимание', "Это тестовый диалог") }}
+{% include 'footer.htm' ignore missing %}
